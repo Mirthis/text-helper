@@ -23,7 +23,6 @@ const Home: NextPage = () => {
     register,
     handleSubmit,
     control,
-    getValues,
     watch,
     formState: { isValid, errors, isSubmitting, isSubmitSuccessful },
   } = useForm<FormInputs>({
@@ -35,7 +34,7 @@ const Home: NextPage = () => {
     resolver: zodResolver(generateReqSchema),
   });
 
-  const { mutateAsync: generate, data } = api.aibot.generate.useMutation({
+  const { mutateAsync: generate } = api.aibot.generate.useMutation({
     onSuccess: (data) => setResult(data),
   });
 
@@ -46,10 +45,11 @@ const Home: NextPage = () => {
   // };
 
   const action = watch("action");
+  const text = watch("text");
+  const language = watch("language");
 
   const nextStep = () => setStep(step + 1);
 
-  console.log(step);
   return (
     <>
       <Head>
@@ -179,25 +179,21 @@ const Home: NextPage = () => {
                 <p className="ml-2">Your request</p>
               </div>
               <div className="mt-4">
-                <p className="ml-10 font-semibold">
-                  {getAction(getValues("action") ?? "")?.name ?? "N/A"}
-                </p>
+                <p className="ml-10 font-semibold">{getAction(action).name}</p>
                 <div className="ml-10">
-                  <p>
-                    {showFullText
-                      ? getValues("text")
-                      : getFirstWords(getValues("text"), 50) + "..."}
-                  </p>
-                  <button
-                    className="font-semibold text-sky-700"
-                    onClick={() => setShowFullText(!showFullText)}
-                  >
-                    Show {showFullText ? "Less" : "More"}
-                  </button>
+                  <p>{showFullText ? text : getFirstWords(text, 50) + "..."}</p>
+                  {text !== getFirstWords(text, 50) && (
+                    <button
+                      className="font-semibold text-sky-700"
+                      onClick={() => setShowFullText(!showFullText)}
+                    >
+                      Show {showFullText ? "Less" : "More"}
+                    </button>
+                  )}
                 </div>
-                {/* <p className="ml-10">
-                    {getLanguage(getValues("language") ?? "")?.code ?? "N/A"}
-                  </p> */}
+                {action === "correct" && (
+                  <p className="ml-10">{getLanguage(language).name}</p>
+                )}
               </div>
             </div>
           )}

@@ -37,4 +37,34 @@ export const LANGUAGES: Language[] = [
     name: "Italian",
     flagUrl: "https://flagcdn.com/it.svg",
   },
+  {
+    code: "ru",
+    name: "Russian",
+    flagUrl: "https://flagcdn.com/ru.svg",
+  },
+  {
+    code: "zh",
+    name: "Chinese",
+    flagUrl: "https://flagcdn.com/cn.svg",
+  },
+  {
+    code: "ja",
+    name: "Japanese",
+    flagUrl: "https://flagcdn.com/jp.svg",
+  },
+  {
+    code: "ko",
+    name: "Korean",
+    flagUrl: "https://flagcdn.com/kr.svg",
+  },
+  {
+    code: "ar",
+    name: "Arabic",
+    flagUrl: "https://flagcdn.com/ae.svg",
+  },
+  {
+    code: "hi",
+    name: "Hindi",
+    flagUrl: "https://flagcdn.com/in.svg",
+  },
 ];

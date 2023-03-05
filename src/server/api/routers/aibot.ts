@@ -3,8 +3,7 @@ import type { CreateCompletionRequest } from "openai";
 import { Configuration, OpenAIApi } from "openai";
 import { env } from "../../../env.mjs";
 import { generateReqSchema } from "~/utils/schemas";
-import { getLanguage } from "~/utils/formatters";
-import { DEFAULT_LANGUAGE } from "~/data/languages";
+import { getCorrectPrompt } from "~/utils/formatters";
 
 const configuration: Configuration = new Configuration({
   apiKey: env.OPENAI_API_KEY,
@@ -25,7 +24,7 @@ export const aiBotRouter = createTRPCRouter({
   generate: publicProcedure
     .input(generateReqSchema)
     .mutation(async ({ input }) => {
-      const language = (getLanguage(input.language) || DEFAULT_LANGUAGE).name;
+      // const language = getLanguage(input.language).name;
       let prompt = "";
       switch (input.action) {
         case "rewrite":
@@ -37,11 +36,8 @@ export const aiBotRouter = createTRPCRouter({
           "${input.text}"`;
           break;
         case "correct":
-          prompt = `Correct the following text:
-          "${input.text}".
-          Your answer should have:
-          - the corrected text in his orignal language
-          - any grammar or spelling corrections explained. Explanation should be in ${language}.
+          prompt = `${getCorrectPrompt(input.language)}
+          ${input.text}
           `;
           break;
       }
